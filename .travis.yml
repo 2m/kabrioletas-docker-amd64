@@ -10,7 +10,7 @@ jobs:
         - docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
         # build image
-        - docker build -t martynas/kabrioletas-armv7ahf:${TRAVIS_TAG:1} .
+        - docker build -t martynas/kabrioletas-armv7ahf .
 
     - stage: deploy
       if: repo = 2m/kabrioletas-docker-armv7ahf AND tag =~ ^v
