@@ -1,0 +1,26 @@
+sudo: required
+services: docker
+language: bash
+
+jobs:
+  include:
+    - stage: deploy
+      if: repo = 2m/kabrioletas-docker-armv7ahf AND tag =~ ^v
+      script:
+        # prepare qemu
+        - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+
+        # build image
+        - docker build -t martynas/kabrioletas-armv7ahf:${TRAVIS_TAG:1} .
+        - docker tag martynas/kabrioletas-armv7ahf:${TRAVIS_TAG:1} martynas/kabrioletas-armv7ahf:latest
+
+        - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+        - docker push martynas/kabrioletas-armv7ahf:${TRAVIS_TAG:1}
+        - docker push martynas/kabrioletas-armv7ahf
+
+env:
+  global:
+    # travis encrypt DOCKER_USER=...
+    - secure: "OzqRvKGi7ME0UIodMU7og3loII/A7EDWAXpghei4jKEspRVqiAzzPBgyoAOzdeYoZ794e0H/XsAYNcF5aeRAOyNY3TUzE73JiPA2yvxZ13vTTvwxMty+K1QMAPtAW8QRgizZJEZHCjgHHzMUa5oxApin20zJDpa7ePOTVMjtjJA5RxRmbcJjsVgGP4FOTfQjiSlTlfPKCZ7Y7zem0KoAYwrfF/UR0Zmxw8RVjDOxEgkD+rvn5rWvt3RFtSxvouUERbcQFL2zqNfWGxvf7jAdW0SQYUd1HcwrrvcXaU8URahz4ACGICNWHAcX4Vtd+1/SxFvmtdybe/RLhLPDb40buEf5LQiEeJRommXnkuGXuYTUfm7O4XNfRrzXWrbcbhr4f5ghZeY7BcGph8evb2RgPZsEcL1s7dIW7JaDdfzBn8VXgSjDQIbRy0m/tfsWxePvXzGq2c49gW9Uozkw40kcSX467q50jjBl7WbCQY9XS7RX8CzpLhu2VkLFpCeSyYNQW+yKC1yN/AAVf1EkIp7Tn+dDgC/HEHtY7qPwgFf+c7DPbd12/vsnG/tgBYxf4/vgxfwYEM0qkpIgB05sgLPWouCcvQWq44/2kHxo2Y9pz5srqAZD7t9ivr6n9xL8mz8MECvz4Ee8fTMyRfpsf0Eqt+b2yhZyMQESWVROfdbMROE="
+    # travis encrypt DOCKER_PASS=...
+    - secure: "D39eQTTNeHjYe1cDUqTtMiaitDhCFuJEhP8mKyJRy8SKnpt+PvYZmrzIpxHndltMN2gWllRs1DF26rD8wH5b+bSXExBWBSJ3VPZV2ipzRY7QrKJdgHyBfmGOo6kTSD3eKT/6JL4zSeaDqOSn1Ab7nO88Zysq5UG5M1mNrh8pko6psP1HOfeMgmXY2WV9MHRXZ6QD5nQS0yxTUjA9pBhEjU9rau1lpmNpIHKEvBrQp5ukrYotX40o9bC0F42zFv/CLZbVBX3xn+x8rnpsG18KMzvABde+K30SG+bBGOSqQ8DBQfxVl/cnmWtzneIy6IrV7dfq8WU7ioqdRckEpoBZY0igiSVPpULIdvHuNal/z6JnIUf5gX8d1PSi/TVoR/8qQ48DsArADiaecU7jXIu4kXgU5CNX5puyKns7samsLwXA6qQGUSFIX/LxYgWSO+8NIdEAKdg2EBVXxr/YG+N8v+JJt4rpgDjxrgSH8ifF+Jsx/KptpuAO9dcDtJYV6uQMLBLfk1Pp2MWzFd6pF8wLHAVNuHpKKZPrks3aZb7h66ScZ/lcVvfrrV4i4WqxEoVaQX5OeBUg36o4o8le8+ERKr8scqwSePybrWrqiHk299vujR494xbLLVrgtJqffU6svBVzO5o88/dz68hTC+ugb/Zz8UNmvbTv+Q0DXLIO/8o="
