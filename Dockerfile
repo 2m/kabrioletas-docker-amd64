@@ -7,6 +7,7 @@ RUN apk update && apk add ca-certificates wget && update-ca-certificates
 RUN wget https://github.com/coursier/coursier/raw/v1.0.1/coursier && chmod +x coursier
 
 RUN ./coursier bootstrap \
+  --progress \
   --repository bintray:2m/maven \
   --main lt.dvim.citywasp.kabrioletas.Kabrioletas \
   --standalone \
