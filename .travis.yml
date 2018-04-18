@@ -10,7 +10,7 @@ jobs:
         - docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
         # build image
-        - travis_wait docker build -t martynas/kabrioletas-armv7ahf .
+        - travis_wait 50 docker build -t martynas/kabrioletas-armv7ahf .
 
     - stage: deploy
       if: repo = 2m/kabrioletas-docker-armv7ahf AND tag =~ ^v
@@ -19,7 +19,7 @@ jobs:
         - docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
         # build image
-        - travis_wait docker build -t martynas/kabrioletas-armv7ahf:${TRAVIS_TAG:1} .
+        - travis_wait 50 docker build -t martynas/kabrioletas-armv7ahf:${TRAVIS_TAG:1} .
         - docker tag martynas/kabrioletas-armv7ahf:${TRAVIS_TAG:1} martynas/kabrioletas-armv7ahf:latest
 
         - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
