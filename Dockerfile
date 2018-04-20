@@ -1,4 +1,4 @@
-FROM resin/generic-armv7ahf-alpine-openjdk:openjdk-8-jre
+FROM resin/up-board-alpine-openjdk:openjdk-8-jre
 MAINTAINER Martynas Mickevičius <self@2m.lt>
 
 # To make wget start working

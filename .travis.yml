@@ -6,25 +6,19 @@ jobs:
   include:
     - stage: test
       script:
-        # prepare qemu
-        - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-
         # build image
-        - travis_wait 50 docker build -t martynas/kabrioletas-armv7ahf .
+        - docker build -t martynas/kabrioletas-amd64 .
 
     - stage: deploy
-      if: repo = 2m/kabrioletas-docker-armv7ahf AND tag =~ ^v
+      if: repo = 2m/kabrioletas-docker-amd64 AND tag =~ ^v
       script:
-        # prepare qemu
-        - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-
         # build image
-        - travis_wait 50 docker build -t martynas/kabrioletas-armv7ahf:${TRAVIS_TAG:1} .
-        - docker tag martynas/kabrioletas-armv7ahf:${TRAVIS_TAG:1} martynas/kabrioletas-armv7ahf:latest
+        - docker build -t martynas/kabrioletas-amd64:${TRAVIS_TAG:1} .
+        - docker tag martynas/kabrioletas-amd64:${TRAVIS_TAG:1} martynas/kabrioletas-amd64:latest
 
         - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-        - docker push martynas/kabrioletas-armv7ahf:${TRAVIS_TAG:1}
-        - docker push martynas/kabrioletas-armv7ahf
+        - docker push martynas/kabrioletas-amd64:${TRAVIS_TAG:1}
+        - docker push martynas/kabrioletas-amd64
 
 env:
   global:
