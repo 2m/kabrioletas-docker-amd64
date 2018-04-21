@@ -12,7 +12,7 @@ RUN ./coursier bootstrap \
   --main lt.dvim.citywasp.kabrioletas.Kabrioletas \
   --standalone \
   --output kabrioletas \
-  lt.dvim.citywasp:kabrioletas_2.12:1.2 \
+  lt.dvim.citywasp:kabrioletas_2.12:1.3 \
   2>&1
 
 ENTRYPOINT ["./kabrioletas"]
