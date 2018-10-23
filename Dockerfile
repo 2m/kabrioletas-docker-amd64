@@ -10,7 +10,7 @@ RUN ./coursier bootstrap \
   --repository bintray:2m/maven \
   --standalone \
   --output kabrioletas \
-  lt.dvim.citywasp:kabrioletas_2.12:1.6 \
+  lt.dvim.citywasp:kabrioletas_2.12:1.7 \
   2>&1
 
 ENTRYPOINT ["./kabrioletas"]
